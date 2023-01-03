@@ -1,21 +1,35 @@
 import { FormGroup, FormControl, Validators, ValidatorFn } from "@angular/forms";
 import { FormConfig } from "./interfaces";
 
-
 const mock: FormConfig = {
     fields: [
         {
             field: 'input',
-            validators: ['required'],
-            name: 'input'
+            validators: [{
+                type: 'static',
+                name: 'required'
+            }],
+            name: 'firstName'
+        },
+        {
+            field: 'input',
+            validators: [{
+                type: 'dynamic',
+                name: 'minLength',
+                value: 10
+            }],
+            name: 'lastName'
         }
     ]
 }
 
 const validatorMap: {
-    [key: string]: ValidatorFn
+    [key: string]: ValidatorFn | ((length: number) => ValidatorFn)
 } = {
-    required: Validators.required
+    required: Validators.required,
+    email: Validators.email,
+    maxLength: (length: number) => Validators.maxLength(length),
+    minLength: (length: number) => Validators.minLength(length)
 }
 
 
@@ -28,9 +42,21 @@ export class Builder {
         const form = new FormGroup({})
 
         formConfig.fields.forEach((field) => {
+            const validators: ValidatorFn[] = [];
 
-            const validators = field.validators.map((validator) => {
-                return validatorMap[validator]
+
+            field.validators.forEach((validator) => {
+
+                if (validator.type === 'static') {
+                    validators.push(validatorMap[validator.name] as ValidatorFn) 
+                } else {
+                    const fn = validatorMap[validator.name] as (length: number) => ValidatorFn
+
+                    validators.push(fn(validator.value || 0)) 
+                }
+                
+
+                return; 
             })
 
             const control = new FormControl('', validators)
