@@ -1,7 +1,11 @@
 import { FormGroup, FormControl, Validators, ValidatorFn } from "@angular/forms";
 import { FormConfig } from "./interfaces";
 
-const mock: FormConfig = {
+export interface ValidatorsMap {
+    [key: string]: ValidatorFn | ((length: number) => ValidatorFn)
+}
+
+export const mock: FormConfig = {
     fields: [
         {
             field: 'input',
@@ -23,9 +27,7 @@ const mock: FormConfig = {
     ]
 }
 
-const validatorMap: {
-    [key: string]: ValidatorFn | ((length: number) => ValidatorFn)
-} = {
+export const mockValidators: ValidatorsMap = {
     required: Validators.required,
     email: Validators.email,
     maxLength: (length: number) => Validators.maxLength(length),
@@ -34,13 +36,19 @@ const validatorMap: {
 
 
 export class Builder {
-    build(formConfig: FormConfig): FormGroup | null {
+
+    static build(formConfig: FormConfig, validatorsMap: ValidatorsMap): FormGroup | null {
+
+        // validate arguments
         if (!formConfig || !formConfig.fields || formConfig.fields.length === 0) {
             return null;
         }
 
+
+        // create empty formGroup
         const form = new FormGroup({})
 
+        // add controls and validators
         formConfig.fields.forEach((field) => {
             const validators: ValidatorFn[] = [];
 
@@ -48,9 +56,9 @@ export class Builder {
             field.validators.forEach((validator) => {
 
                 if (validator.type === 'static') {
-                    validators.push(validatorMap[validator.name] as ValidatorFn) 
+                    validators.push(validatorsMap[validator.name] as ValidatorFn) 
                 } else {
-                    const fn = validatorMap[validator.name] as (length: number) => ValidatorFn
+                    const fn = validatorsMap[validator.name] as (length: number) => ValidatorFn
 
                     validators.push(fn(validator.value || 0)) 
                 }
