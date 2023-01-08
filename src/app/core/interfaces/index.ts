@@ -1,7 +1,7 @@
 export interface FormConfig {
     fields: {
         name: string;
-        field: string;
+        type: string;
         validators: {
             type: 'static' | 'dynamic',
             name: string;
