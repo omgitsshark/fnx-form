@@ -1,0 +1,13 @@
+<ng-container *ngIf="config && form">
+    <ng-container *ngFor="let field of config.fields">
+        <ng-container [ngSwitch]="field.type">
+            <ng-container [ngTemplateOutlet]="input"
+                [ngTemplateOutletContext]="{formControl: form.controls[field.name]}"></ng-container>
+
+        </ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #input let-control="formControl">
+    <input [formControl]="control">
+</ng-template>
