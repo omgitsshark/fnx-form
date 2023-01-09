@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { FormConfig } from '../../interfaces';
+
+export interface ValidatorsMap {
+  [id: string]: ValidatorFn
+}
 
 @Component({
   selector: 'app-form-generator',
@@ -18,6 +22,9 @@ export class FormGeneratorComponent implements OnInit {
   }
 
 
+  @Input() validators: ValidatorsMap | null = null;
+
+
   config: FormConfig | null = null;
   form: FormGroup | null = null;
 
@@ -28,10 +35,30 @@ export class FormGeneratorComponent implements OnInit {
 
 
   private generateReactiveForm(formConfig: FormConfig): FormGroup {
-      const formGroup = new FormGroup({});
+    const formGroup = new FormGroup({});
 
 
-      return formGroup;
+    formConfig.fields.forEach((field) => {
+      const control = new FormControl();
+
+      // set validators
+      field.validators.forEach((validator) => {
+
+        if (validator.type === 'static' && this.validators && this.validators[validator.name]) {
+          control.addValidators(this.validators[validator.name])
+        }
+
+         
+      })
+
+      // set async validators
+
+      formGroup.addControl(field.name, control)
+
+    })
+
+
+    return formGroup;
   }
 
 }
