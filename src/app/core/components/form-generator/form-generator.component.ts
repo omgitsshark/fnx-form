@@ -50,15 +50,12 @@ export class FormGeneratorComponent implements OnInit {
           control.addValidators(this.validators[validator.name] as ValidatorFn)
         }
 
-         
         if (validator.type === 'dynamic' && this.validators && this.validators[validator.name]) {
           const dynamicValidator = this.validators[validator.name] as ValidatorFn;
 
           control.addValidators(dynamicValidator(validator.value as any) as ValidatorFn)
         }
       })
-
-      // set async validators
 
       formGroup.addControl(field.name, control)
 
