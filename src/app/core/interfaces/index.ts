@@ -3,7 +3,7 @@ export interface FormConfig {
         name: string;
         type: string;
         validators: {
-            type: 'static' | 'dynamic',
+            type: 'static' | 'dynamic' | 'async',
             name: string;
             value?: number;
         }[];

@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AsyncValidator, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { FormConfig } from '../../interfaces';
 
 export interface ValidatorsMap {
-  [id: string]: ((value: number) => ValidatorFn) | ValidatorFn
+  [id: string]: ((value: number) => ValidatorFn) | ValidatorFn | AsyncValidator | AsyncValidatorFn
 }
 
 @Component({
@@ -55,6 +55,14 @@ export class FormGeneratorComponent implements OnInit {
 
           control.addValidators(dynamicValidator(validator.value as any) as ValidatorFn)
         }
+
+        if (validator.type === 'async' && this.validators && this.validators[validator.name]) {
+          const dynamicValidator = this.validators[validator.name] as ValidatorFn;
+
+          control.addAsyncValidators(dynamicValidator(validator.value as any) as AsyncValidatorFn)
+        }
+
+
       })
 
       formGroup.addControl(field.name, control)
