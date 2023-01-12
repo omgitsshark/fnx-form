@@ -8,6 +8,8 @@
     </ng-container>
 </ng-container>
 
-<ng-template #input let-control="formControl">
+<!-- TODO: add mask to imput -->
+<ng-template #input let-control="formControl" let-mask="mask">
     <input [formControl]="control">
 </ng-template>
+

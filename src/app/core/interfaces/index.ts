@@ -1,3 +1,5 @@
+import { ValidatorFn, AsyncValidator, AsyncValidatorFn } from "@angular/forms";
+
 export interface FormConfig {
     fields: {
         name: string;
@@ -8,4 +10,8 @@ export interface FormConfig {
             value?: number;
         }[];
     }[]
+}
+
+export interface ValidatorsMap {
+    [id: string]: ((value: number) => ValidatorFn) | ValidatorFn | AsyncValidator | AsyncValidatorFn
 }
