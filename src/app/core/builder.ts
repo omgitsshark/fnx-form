@@ -8,21 +8,21 @@ export interface ValidatorsMap {
 export const mock: FormConfig = {
     fields: [
         {
-            field: 'input',
+            name: 'firstname',
+            type: 'input',
             validators: [{
                 type: 'static',
                 name: 'required'
             }],
-            name: 'firstName'
         },
         {
-            field: 'input',
+            type: 'input',
             validators: [{
                 type: 'dynamic',
                 name: 'minLength',
                 value: 10
             }],
-            name: 'lastName'
+            name: 'lastname'
         }
     ]
 }
