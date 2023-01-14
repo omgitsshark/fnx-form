@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Builder, mock, mockValidators } from './core/builder';
+import { mock } from './core/builder';
 
 @Component({
   selector: 'app-root',
