@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { mock } from './core/builder';
+import { mock, mockValidators } from './core/builder';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +8,5 @@ import { mock } from './core/builder';
 })
 export class AppComponent {
   config = mock;
+  validators = mockValidators;
 }
