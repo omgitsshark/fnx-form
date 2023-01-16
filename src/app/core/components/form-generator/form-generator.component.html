@@ -9,7 +9,7 @@
 </ng-container>
 
 <!-- TODO: add mask to imput -->
-<ng-template #input let-control="formControl" let-mask="mask">
-    <input [formControl]="control">
+<ng-template #input let-control="formControl" let-mask="mask" let-disabled="disabled">
+    <input [formControl]="control" [disabled]="disabled">
 </ng-template>
 
