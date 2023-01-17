@@ -1,4 +1,8 @@
 <ng-container *ngIf="config && form">
+
+    <title>{{config.name}}</title>
+
+
     <ng-container *ngFor="let field of config.fields">
         <ng-container [ngSwitch]="field.type">
             <ng-container [ngTemplateOutlet]="input"
@@ -12,4 +16,3 @@
 <ng-template #input let-control="formControl" let-mask="mask" let-disabled="disabled">
     <input [formControl]="control" [disabled]="disabled">
 </ng-template>
-
